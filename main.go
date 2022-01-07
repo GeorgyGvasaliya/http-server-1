@@ -1,8 +1,8 @@
 package main
 
 import (
-	"WEB2/learning http/utils"
-	"WEB2/learning http/views"
+	"WEB2/learning_http/utils"
+	"WEB2/learning_http/views"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -12,11 +12,13 @@ import (
 const (
 	homeFile    = "views/home.gohtml"
 	contactFile = "views/contact.gohtml"
+	signupFile  = "views/signup.gohtml"
 )
 
 var (
 	homeTemplate    *template.Template
 	contactTemplate *template.Template
+	signupTemplate  *template.Template
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -35,14 +37,24 @@ func contact(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func signup(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	err := contactTemplate.ExecuteTemplate(w, "signup.gohtml", nil)
+	if err != nil {
+		log.Fatalln("Cannot execute contact template", err)
+	}
+}
+
 func main() {
 	layoutFiles := utils.LayoutFiles()
 	homeTemplate = views.ParseTemplates(homeFile, layoutFiles)
 	contactTemplate = views.ParseTemplates(contactFile, layoutFiles)
+	signupTemplate = views.ParseTemplates(signupFile, layoutFiles)
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", home)
 	r.HandleFunc("/contact", contact)
+	r.HandleFunc("/signUp", signup)
 
 	err := http.ListenAndServe(":3000", r) // nil - we want use default ServeMux
 	if err != nil {
