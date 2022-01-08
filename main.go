@@ -14,7 +14,7 @@ func main() {
 	r.HandleFunc("/contact", controllers.Contact)
 	r.HandleFunc("/signup", controllers.New)
 
-	err := http.ListenAndServe(":3000", r) // nil - we want use default ServeMux
+	err := http.ListenAndServe(":3000", r)
 	if err != nil {
 		log.Fatalln("Cannot ListenAndServe, error:", err)
 	}
