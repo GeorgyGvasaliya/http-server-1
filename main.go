@@ -10,9 +10,10 @@ import (
 func main() {
 
 	r := mux.NewRouter()
-	r.HandleFunc("/", controllers.Home)
-	r.HandleFunc("/contact", controllers.Contact)
-	r.HandleFunc("/signup", controllers.New)
+	r.HandleFunc("/", controllers.Home).Methods("GET")
+	r.HandleFunc("/contact", controllers.Contact).Methods("GET")
+	r.HandleFunc("/signup", controllers.New).Methods("GET")
+	r.HandleFunc("/signup", controllers.Test).Methods("POST")
 
 	err := http.ListenAndServe(":3000", r)
 	if err != nil {
